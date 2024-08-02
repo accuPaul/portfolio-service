@@ -1,0 +1,28 @@
+services:
+  mongo_db:
+    image: mongo:7.0.12
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME= $MONGO_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD= $MONGO_PASSWORD
+      - MONGO_INITDB_DATABASE= $MONGO_DBNAME
+    volumes:
+      - mongo-data:/data/db
+  app:
+    depends_on:
+      - mongo_db
+    build: .
+    restart: on-failure
+    env_file: ./.env
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_APPLICATION_JSON: '{
+          "spring.data.mongodb.uri":"mongodb://$MONGO_USERNAME:$MONGO_PASSWORD@mongo_db:27017/$MONGO_DBNAME?authSource=admin"
+      }'
+volumes:
+  mongo-data:
+    driver: local
