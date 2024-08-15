@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.mountp</groupId>
-	<artifactId>portfolio-service</artifactId>
+	<artifactId>paulfolio-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>portfolio-service</name>
+	<name>paulfolio-service</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>

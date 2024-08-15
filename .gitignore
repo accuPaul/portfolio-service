@@ -32,5 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 
-secrets.properties
+/src/main/resources/secrets.properties
 /.env
+/k8s/config/secrets.yml

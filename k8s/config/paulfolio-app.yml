@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: paulfolio-app
+  labels:
+    app: paulfolio-app
+spec:
+  selector:
+    app: paulfolio-app
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paulfolio-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paulfolio-app
+  template:
+    metadata:
+      labels:
+        app: paulfolio-app
+    spec:
+      containers:
+        - name: paulfolio-app
+          image: mountp/paulfolio:2.0.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  key: MONGO_URI
+                  name: paulfolio-secret
+             #   configMapKeyRef:
+             #     key: SPRING_DATA_MONGODB_URI
+             #     name: app-config
+            - name: MONGO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: MONGO_USERNAME
+                  name: paulfolio-secret
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MONGO_PASSWORD
+                  name: paulfolio-secret
+            - name: MONGO_DBNAME
+              valueFrom:
+                secretKeyRef:
+                  key: MONGO_DBNAME
+                  name: paulfolio-secret
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: JWT_SECRET
+                  name: paulfolio-secret
